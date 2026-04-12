@@ -73,7 +73,7 @@ class User extends Authenticatable
     // Empresa: 1:N ofertas publicadas
     public function jobOffers(): HasMany
     {
-        return $this->hasMany(JobOffer::class, 'company_user_id');
+        return $this->hasMany(JobOffer::class, 'user_id');
     }
 
     // Usuario: 1:N postulaciones

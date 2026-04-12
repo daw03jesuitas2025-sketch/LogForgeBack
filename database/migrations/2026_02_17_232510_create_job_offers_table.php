@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('job_offers', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('company_user_id')
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 

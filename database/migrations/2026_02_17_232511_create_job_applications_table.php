@@ -8,20 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('job_applications', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('to_user_id')
+            // Usuario que se postula (Candidato)
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->string('from_name');
-            $table->string('from_email');
+            // Oferta a la que se postula
+            $table->foreignId('job_offer_id')
+                ->constrained('job_offers')
+                ->cascadeOnDelete();
 
-            $table->string('subject');
-            $table->text('message');
-
-            $table->timestamp('read_at')->nullable();
+            // Campos adicionales para la postulación
+            $table->text('cover_letter')->nullable(); // Carta de presentación
+            $table->string('resume_path')->nullable(); // Ruta del CV
 
             $table->timestamps();
         });
@@ -29,6 +31,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('job_applications');
     }
 };

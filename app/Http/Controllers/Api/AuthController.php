@@ -17,15 +17,27 @@ class AuthController extends Controller
             'name' => ['required','string','max:255'],
             'email' => ['required','email','max:255','unique:users,email'],
             'password' => ['required','string','min:6','confirmed'],
+            'role' => ['required', 'in:user,company'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user',
-            'theme' => null,
+            'role' => $request->role,
         ]);
+
+        // Lógica de Perfiles Automática
+        if ($user->role === 'company') {
+            $user->companyProfile()->create([
+                'company_name' => $user->name,
+                'description' => 'Nueva empresa en la plataforma',
+            ]);
+        } else {
+            $user->profile()->create([
+                'title' => 'Buscando nuevas oportunidades',
+            ]);
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -79,4 +91,5 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
 }

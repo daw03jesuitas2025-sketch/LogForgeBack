@@ -14,7 +14,7 @@ class JobOffer extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'company_user_id',
+        'user_id',
         'title',
         'description',
         'location',
@@ -27,7 +27,7 @@ class JobOffer extends Model
 
     public function company(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'company_user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function applications(): HasMany

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Education extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = 'educations';
     protected $fillable = [
         'user_id',
         'institution',

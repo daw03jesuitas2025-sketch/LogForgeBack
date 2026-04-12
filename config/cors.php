@@ -1,5 +1,5 @@
 <?php
-
+// Para comunicar Laravel con Angular
 return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
