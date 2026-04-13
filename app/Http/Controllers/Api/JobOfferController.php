@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobOffer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CompanyProfile;
 
 class JobOfferController extends Controller
 {
@@ -13,8 +14,7 @@ class JobOfferController extends Controller
     public function index()
     {
         // Traemos también los datos de la empresa (relación company)
-        return response()->json(JobOffer::with('company')->where('is_active', true)->latest()->get());
-    }
+        return response()->json(JobOffer::with('user.companyProfile')->where('is_active', true)->latest()->get());    }
 
     // Crear oferta (POST /api/job-offers)
     public function store(Request $request)
@@ -23,10 +23,12 @@ class JobOfferController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
-            'user_id' => 'required|exists:users,id',
         ]);
 
-        $offer = JobOffer::create($validated + ['is_active' => true]);
+        $offer = JobOffer::create($validated + [
+                'is_active' => true,
+                'user_id' => Auth::id()
+            ]);
         return response()->json($offer, 201);
     }
 
