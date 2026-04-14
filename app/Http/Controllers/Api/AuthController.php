@@ -91,5 +91,19 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+    public function getSuggestions()
+    {
+        $currentUserId = auth()->id();
 
+        // Filtramos:
+        // 1. Que no sea el usuario actual
+        // 2. Que el rol sea 'user' (ajusta esto según tus nombres de roles)
+        // 3. Limitamos a 5 para que no sea una lista infinita
+        $users = User::where('id', '!=', $currentUserId)
+            ->where('role', 'user')
+            ->limit(5)
+            ->get();
+
+        return response()->json($users);
+    }
 }

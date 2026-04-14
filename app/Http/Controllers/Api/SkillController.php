@@ -28,4 +28,27 @@ class SkillController extends Controller
 
         return response()->json(['message' => 'Habilidades actualizadas', 'skills' => Auth::user()->skills]);
     }
+    public function destroy($id)
+    {
+        try {
+            // Obtenemos al usuario autenticado
+            $user = Auth::user();
+
+            // En lugar de borrar la Skill de la tabla 'skills',
+            // la quitamos de la relación en la tabla pivote
+            $user->skills()->detach($id);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Habilidad quitada del perfil'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al desvincular la habilidad',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

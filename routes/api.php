@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\JobApplicationController;
+use App\Http\Controllers\Api\SkillController;
 use Illuminate\Support\Facades\Route;
 
 // RUTAS PÚBLICAS
@@ -23,9 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::apiResource('experiences', ExperienceController::class);
     Route::apiResource('educations', EducationController::class);
+    Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
     Route::post('/skills', [ProfileController::class, 'addSkill']);
-    Route::post('/applications', [JobApplicationController::class, 'store']);});
-Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::post('/applications', [JobApplicationController::class, 'store']);
+    Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
+    Route::middleware('auth:sanctum')->get('/suggestions', [AuthController::class, 'getSuggestions']);
+});
 
 // RUTAS DE ADMINISTRACIÓN
 Route::prefix('admin')->group(function () {

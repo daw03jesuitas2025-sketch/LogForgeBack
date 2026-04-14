@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Profile;
 
 class ProfileController extends Controller
 {
@@ -19,18 +20,43 @@ class ProfileController extends Controller
     // Actualizar datos básicos (Titular, Bio, Ubicación)
     public function update(Request $request)
     {
-        $profile = Auth::user()->profile;
+        try {
+            $user = Auth::user();
 
-        $validated = $request->validate([
-            'title'            => 'required|string|max:255',
-            'biography'        => 'nullable|string',
-            'location'         => 'nullable|string|max:255',
-            'meta_title'       => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:255',
-        ]);
+            // Validamos. Si falla aquí, Laravel devuelve un 422 automáticamente (no un 500)
+            $request->validate([
+                'name'      => 'required|string|max:255',
+                'title'     => 'nullable|string|max:255',
+                'biography' => 'nullable|string',
+                'location'  => 'nullable|string|max:255',
+            ]);
 
-        $profile->update($validated);
-        return response()->json($profile);
+            // 1. Actualizar el nombre del usuario (tabla users)
+            $user->update([
+                'name' => $request->input('name')
+            ]);
+
+            // 2. Actualizar o crear el perfil (tabla profiles)
+            // Usamos input() para evitar el error "Undefined array key"
+            $user->profile()->updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'title'     => $request->input('title'),
+                    'biography' => $request->input('biography'),
+                    'location'  => $request->input('location'),
+                ]
+            );
+
+            // 3. Retornar el usuario con sus relaciones para que Angular se refresque
+            return response()->json($user->load(['profile', 'educations', 'experiences', 'skills']));
+
+        } catch (\Exception $e) {
+            // Si algo falla, ahora nos dirá exactamente el qué en la consola
+            return response()->json([
+                'error' => 'Error en el servidor',
+                'details' => $e->getMessage()
+            ], 500);
+        }
     }
     public function addSkill(Request $request)
     {
