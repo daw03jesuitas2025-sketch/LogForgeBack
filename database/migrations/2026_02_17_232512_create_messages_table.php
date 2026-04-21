@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            // Añadimos los campos que el modelo necesita:
+            $table->foreignId('from_user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('to_user_id')->constrained('users')->onDelete('cascade');
             $table->string('from_name');
             $table->string('from_email');

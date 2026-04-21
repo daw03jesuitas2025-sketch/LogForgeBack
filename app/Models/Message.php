@@ -12,6 +12,7 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
+        'from_user_id',
         'to_user_id',
         'from_name',
         'from_email',
@@ -27,5 +28,11 @@ class Message extends Model
     public function toUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'to_user_id');
+    }
+
+// El que envía el mensaje (la empresa)
+    public function sender(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'from_user_id');
     }
 }

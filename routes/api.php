@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\JobApplicationController;
 use App\Http\Controllers\Api\SkillController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 // RUTAS PÚBLICAS
@@ -30,6 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/applications', [JobApplicationController::class, 'store']);
     Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
     Route::middleware('auth:sanctum')->get('/suggestions', [AuthController::class, 'getSuggestions']);
+    Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
+    Route::middleware('auth:sanctum')->get('/candidates', [AuthController::class, 'getCandidates']);
+    Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
 });
 
 // RUTAS DE ADMINISTRACIÓN
