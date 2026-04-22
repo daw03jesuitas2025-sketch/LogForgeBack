@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
     Route::middleware('auth:sanctum')->get('/candidates', [AuthController::class, 'getCandidates']);
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
+
 });
 
 // RUTAS DE ADMINISTRACIÓN
@@ -41,4 +42,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/stats', [AdminController::class, 'getDashboardStats']);
     Route::get('/users', [AdminController::class, 'getUsers']);
     Route::get('/offers', [AdminController::class, 'getJobOffers']);
+    Route::get('/messages', [AdminController::class, 'getMessages']);
+    Route::get('/companies', [AdminController::class, 'getCompanies']);
 });
