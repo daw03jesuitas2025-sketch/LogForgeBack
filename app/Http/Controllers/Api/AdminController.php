@@ -7,6 +7,7 @@ use App\Models\Message;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\JobOffer;
+use App\Models\CompanyProfile;
 
 class AdminController extends Controller
 {
@@ -63,10 +64,37 @@ class AdminController extends Controller
 
     public function getCompanies()
     {
-        // Traemos el perfil de empresa cargando la relación 'user'
-        // Esto evita el problema de las N+1 consultas
-        $companies = CompanyProfile::with('user')->get();
+        try {
+            // Opción A: Si quieres listar los perfiles de empresa directamente
+            $companies = CompanyProfile::with('user')->get();
 
-        return response()->json($companies);
+            // Opción B (Mejor para LinkedIn): Listar Usuarios que tengan el ROL company
+            // $companies = User::where('role', 'company')->with('companyProfile')->get();
+
+            return response()->json($companies);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    // App\Http\Controllers\Api\AdminController.php
+
+    public function getMyProfile()
+    {
+        try {
+            $user = auth()->user();
+
+            // Cargamos el perfil de empresa relacionado con el usuario
+            // Asegúrate de que en tu modelo User tengas la relación:
+            // public function companyProfile() { return $this->hasOne(CompanyProfile::class); }
+            $profile = CompanyProfile::where('user_id', $user->id)->first();
+
+            if (!$profile) {
+                return response()->json(['error' => 'Perfil no encontrado'], 404);
+            }
+
+            return response()->json($profile);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

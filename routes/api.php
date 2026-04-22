@@ -34,6 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
     Route::middleware('auth:sanctum')->get('/candidates', [AuthController::class, 'getCandidates']);
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
+    Route::get('/admin/my-profile', [AdminController::class, 'getMyProfile']);
+    // Perfil de la empresa logueada
+    Route::get('/admin/my-profile', [AdminController::class, 'getMyProfile']);
+    // Ofertas de la empresa logueada (Añade esta)
+    Route::get('/admin/my-offers', [AdminController::class, 'getJobOffers']);
 
 });
 
