@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('job-offers', JobOfferController::class);
 
     Route::get('/profile', [ProfileController::class, 'show']);
+    Route::get('/profile/resume', [ProfileController::class, 'resume']);
     Route::apiResource('experiences', ExperienceController::class);
     Route::apiResource('educations', EducationController::class);
     Route::delete('/skills/{id}', [SkillController::class, 'destroy']);

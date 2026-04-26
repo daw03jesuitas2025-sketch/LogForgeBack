@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Profile;
 
 class ProfileController extends Controller
@@ -71,5 +72,16 @@ class ProfileController extends Controller
         auth()->user()->skills()->syncWithoutDetaching([$skill->id]);
 
         return response()->json($skill, 201);
+    }
+
+    // Generar y descargar un PDF con el perfil completo del usuario
+    public function resume()
+    {
+        $user = auth()->user()->load(['profile', 'educations', 'experiences', 'skills']);
+
+        // Cargar la vista Blade que formatea el CV/resume
+        $pdf = Pdf::loadView('resume', ['user' => $user]);
+
+        return $pdf->download('resume_' . $user->id . '.pdf');
     }
 }
