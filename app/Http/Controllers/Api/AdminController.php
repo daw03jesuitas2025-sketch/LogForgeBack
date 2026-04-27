@@ -36,11 +36,24 @@ class AdminController extends Controller
         //return response()->json(JobOffer::all());
     //}
 
-   public function getMessages()
+    public function getMessages()
     {
-        // Devolvemos los mensajes para la tabla del admin
-        // Usamos with('sender') para traer los datos del usuario que envía
-        return response()->json(Message::with('sender')->orderBy('created_at', 'desc')->get());
+        // Cargamos la relación 'toUser' que definiste en el modelo Message
+        $messages = \App\Models\Message::with('toUser')->latest()->get();
+
+        return $messages->map(function($msg) {
+            return [
+                'id' => $msg->id,
+                'from_name' => $msg->from_name,
+                'from_email' => $msg->from_email,
+                'from_user_id' => $msg->from_user_id,
+                'to_user_id' => $msg->to_user_id,
+                'to_name' => $msg->toUser ? $msg->toUser->name : 'Usuario no encontrado',
+                'subject' => $msg->subject,
+                'message' => $msg->message,
+                'created_at' => $msg->created_at,
+            ];
+        });
     }
 
     public function getJobOffers()
@@ -72,27 +85,6 @@ class AdminController extends Controller
             // $companies = User::where('role', 'company')->with('companyProfile')->get();
 
             return response()->json($companies);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-    // App\Http\Controllers\Api\AdminController.php
-
-    public function getMyProfile()
-    {
-        try {
-            $user = auth()->user();
-
-            // Cargamos el perfil de empresa relacionado con el usuario
-            // Asegúrate de que en tu modelo User tengas la relación:
-            // public function companyProfile() { return $this->hasOne(CompanyProfile::class); }
-            $profile = CompanyProfile::where('user_id', $user->id)->first();
-
-            if (!$profile) {
-                return response()->json(['error' => 'Perfil no encontrado'], 404);
-            }
-
-            return response()->json($profile);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

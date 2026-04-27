@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProfileController extends Controller
 {
@@ -71,5 +72,25 @@ class ProfileController extends Controller
         auth()->user()->skills()->syncWithoutDetaching([$skill->id]);
 
         return response()->json($skill, 201);
+    }
+
+    public function downloadResume()
+    {
+        try {
+            $user = auth()->user()->load(['profile', 'experiences', 'educations', 'skills']);
+
+            // ELIMINA O COMENTA ESTE BLOQUE:
+            /*
+            if (!$user->profile) {
+                return response()->json(['error' => 'Perfil no encontrado'], 404);
+            }
+            */
+
+            $pdf = Pdf::loadView('pdf.resume', compact('user'));
+            return $pdf->stream('cv_'.$user->name.'.pdf');
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
