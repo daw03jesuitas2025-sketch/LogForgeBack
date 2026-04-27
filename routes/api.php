@@ -29,7 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rutas comunes para cualquier usuario autenticado
     Route::get('/me', [AuthController::class, 'me']);
-<<<<<<< HEAD
 
     Route::apiResource('job-offers', JobOfferController::class);
 
@@ -45,9 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:sanctum')->get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
     Route::middleware('auth:sanctum')->get('/candidates', [AuthController::class, 'getCandidates']);
-=======
     Route::post('/logout', [AuthController::class, 'logout']);
->>>>>>> temp-fix
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
 
     /*

@@ -59,8 +59,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => [
-                PDO::MYSQL_ATTR_SSL_CA => true,
-            ],
+                'options' => [],    ],
         ],
 
         'mariadb' => [
