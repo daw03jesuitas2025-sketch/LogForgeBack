@@ -18,7 +18,6 @@ class Message extends Model
         'from_email',
         'subject',
         'message',
-        'read_at',
     ];
 
     protected $casts = [

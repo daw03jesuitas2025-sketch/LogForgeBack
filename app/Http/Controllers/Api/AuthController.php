@@ -106,8 +106,5 @@ class AuthController extends Controller
 
         return response()->json($users);
     }
-    public function getCandidates() {
-        // Filtramos para que solo devuelva usuarios con rol 'user'
-        return User::where('role', 'user')->with('profile')->get();
-    }
+
 }
