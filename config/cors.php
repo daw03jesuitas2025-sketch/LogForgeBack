@@ -9,6 +9,7 @@ return [
     // he añadido la url de Vercel
     'allowed_origins' => [
         'https://logforge-front.vercel.app',
+        'https://logforgefront-production.up.railway.app',
         'http://localhost:4200' // Para poder seguir probando en local
     ],
     'allowed_origins_patterns' => [],
