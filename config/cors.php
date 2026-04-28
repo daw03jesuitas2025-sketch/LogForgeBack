@@ -7,8 +7,10 @@ return [
     'allowed_methods' => ['*'],
 
     // he añadido la url de Vercel
-    'allowed_origins' => ['https://logforge-front.vercel.app'],
-
+    'allowed_origins' => [
+        'https://logforge-front.vercel.app',
+        'http://localhost:4200' // Para poder seguir probando en local
+    ],
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
