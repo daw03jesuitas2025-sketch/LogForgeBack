@@ -39,10 +39,20 @@ class JobOfferController extends Controller
     }
 
     // Actualizar (PUT /api/job-offers/{id})
-    public function update(Request $request, JobOffer $jobOffer)
+    public function update(Request $request, $id)
     {
-        $jobOffer->update($request->all());
-        return response()->json($jobOffer);
+        $offer = JobOffer::where('id', $id)
+            ->where('user_id', auth()->id()) // Seguridad: solo el dueño edita
+            ->firstOrFail();
+
+        $offer->update([
+            'title'       => $request->title,
+            'location'    => $request->location,
+            'description' => $request->description,
+            'is_active'   => $request->is_active,
+        ]);
+
+        return response()->json($offer);
     }
 
     // Borrar (DELETE /api/job-offers/{id})

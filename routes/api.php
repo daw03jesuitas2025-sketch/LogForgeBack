@@ -89,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/offers', [AdminController::class, 'getJobOffers']);
         Route::get('/messages', [AdminController::class, 'getMessages']);
         Route::get('/companies', [AdminController::class, 'getCompanies']);
-        Route::get('/my-profile', [AdminController::class, 'getMyProfile']);
+        Route::get('/my-profile', [AdminController::class, 'getMyProfile']); //MIRARRR
     });
 
 });
