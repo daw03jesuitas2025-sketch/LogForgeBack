@@ -58,7 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/my-offers', [CompanyController::class, 'getMyOffers']);
 
-        // --- AQUÍ ESTÁ LA CORRECCIÓN PARA TU 404 ---
         // Definimos las rutas de ofertas dentro de 'company' para que coincidan con tu Angular
         Route::post('/job-offers', [JobOfferController::class, 'store']);
         Route::put('/job-offers/{id}', [JobOfferController::class, 'update']);
@@ -67,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/my-profile', [CompanyController::class, 'getMyProfile']);
         Route::put('/my-profile', [CompanyController::class, 'updateProfile']);
         Route::get('/candidates', [CompanyController::class, 'getCandidates']);
+        Route::get('/job-offers/{id}/applications', [JobOfferController::class, 'getApplications']); // Candidatos de una oferta
 
         // Eliminada la repetición de candidates y interview que ya estaban arriba
     });

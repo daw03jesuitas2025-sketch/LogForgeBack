@@ -51,4 +51,13 @@ class JobOfferController extends Controller
         $jobOffer->delete();
         return response()->json(['message' => 'Eliminado']);
     }
+
+    public function getApplications($id)
+    {
+        // Buscamos la oferta y cargamos las postulaciones con el usuario (candidato)
+        $offer = JobOffer::with('applications.user')->findOrFail($id);
+
+        // Devolvemos solo las postulaciones
+        return response()->json($offer->applications);
+    }
 }
