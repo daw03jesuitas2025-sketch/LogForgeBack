@@ -58,7 +58,7 @@ class JobApplicationController extends Controller
         $userId = Auth::id();
 
         $applications = JobApplication::with('jobOffer.user.companyProfile')
-            ->where('user_id', $userId) // Ahora sí es privado
+            ->where('user_id', $userId)
             ->latest()
             ->get();
 

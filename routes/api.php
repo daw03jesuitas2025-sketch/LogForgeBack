@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\JobApplicationController;
 use App\Http\Controllers\Api\SkillController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | RUTAS PÚBLICAS
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/job-offers', [JobOfferController::class, 'index']); // Ver todas las ofertas en el inicio
+Route::get('/job-offers', [JobOfferController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +28,11 @@ Route::get('/job-offers', [JobOfferController::class, 'index']); // Ver todas la
 */
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Rutas comunes para cualquier usuario autenticado
+    // Rutas comunes
     Route::get('/me', [AuthController::class, 'me']);
 
-    Route::apiResource('job-offers', JobOfferController::class);
+    // Comentamos o quitamos el apiResource general si vas a usar las rutas de /company
+    // Route::apiResource('job-offers', JobOfferController::class);
 
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::get('/profile/resume', [ProfileController::class, 'resume']);
@@ -40,10 +42,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/skills', [ProfileController::class, 'addSkill']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::post('/applications', [JobApplicationController::class, 'store']);
-    Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
-    Route::middleware('auth:sanctum')->get('/suggestions', [AuthController::class, 'getSuggestions']);
+
+    Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
-    Route::middleware('auth:sanctum')->get('/candidates', [AuthController::class, 'getCandidates']);
+
+    // Eliminado el middleware duplicado aquí para evitar errores
+    Route::get('/candidates', [AuthController::class, 'getCandidates']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
 
@@ -54,34 +58,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/my-offers', [CompanyController::class, 'getMyOffers']);
 
+        // --- AQUÍ ESTÁ LA CORRECCIÓN PARA TU 404 ---
+        // Definimos las rutas de ofertas dentro de 'company' para que coincidan con tu Angular
+        Route::post('/job-offers', [JobOfferController::class, 'store']);
+        Route::put('/job-offers/{id}', [JobOfferController::class, 'update']);
+        Route::delete('/job-offers/{id}', [JobOfferController::class, 'destroy']);
+
         Route::get('/my-profile', [CompanyController::class, 'getMyProfile']);
         Route::put('/my-profile', [CompanyController::class, 'updateProfile']);
-
         Route::get('/candidates', [CompanyController::class, 'getCandidates']);
 
-        // Reclutamiento
-        Route::get('/candidates', [CompanyController::class, 'getCandidates']);
-        Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
+        // Eliminada la repetición de candidates y interview que ya estaban arriba
     });
 
     /*
     |--- 2. ROL USER (Candidatos) ---
+    | Se mantiene el middleware de habilidades pero sin duplicar rutas de fuera
     */
     Route::middleware('ability:role-user')->group(function () {
-        // Postulaciones y sugerencias
-        Route::post('/applications', [JobApplicationController::class, 'store']);
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
-        Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
-
-        // Perfil personal y CV del candidato
-        Route::get('/profile', [ProfileController::class, 'show']);
-        Route::put('/profile', [ProfileController::class, 'update']);
-        Route::get('/profile/resume', [ProfileController::class, 'resume']);
-
-        Route::apiResource('experiences', ExperienceController::class);
-        Route::apiResource('educations', EducationController::class);
-        Route::post('/skills', [ProfileController::class, 'addSkill']);
-        Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
+        // Las rutas de perfil se gestionan por la parte común para evitar el 401/500
     });
 
     /*
@@ -90,10 +86,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->middleware('ability:role-admin')->group(function () {
         Route::get('/stats', [AdminController::class, 'getDashboardStats']);
         Route::get('/users', [AdminController::class, 'getUsers']);
-        Route::get('/offers', [AdminController::class, 'getJobOffers']); // Ver TODAS las ofertas de todas las empresas
+        Route::get('/offers', [AdminController::class, 'getJobOffers']);
         Route::get('/messages', [AdminController::class, 'getMessages']);
         Route::get('/companies', [AdminController::class, 'getCompanies']);
-        Route::get('/my-profile', [AdminController::class, 'getMyProfile']); // Perfil administrativo
+        Route::get('/my-profile', [AdminController::class, 'getMyProfile']);
     });
 
 });
