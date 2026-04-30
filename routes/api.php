@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /*
     |--- 3. ROL ADMIN (SuperAdministrador del Sistema) ---
     */
-    Route::prefix('admin')->middleware('ability:role-admin')->group(function () {
+    Route::prefix('admin')->group(function () {
         Route::get('/stats', [AdminController::class, 'getDashboardStats']);
         Route::get('/users', [AdminController::class, 'getUsers']);
         Route::get('/offers', [AdminController::class, 'getJobOffers']);
