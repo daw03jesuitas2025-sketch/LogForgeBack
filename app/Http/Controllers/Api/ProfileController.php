@@ -65,7 +65,6 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-
         $skill = \App\Models\Skill::firstOrCreate(['name' => $validated['name']]);
 
         // La asociamos al usuario (evitando duplicados con syncWithoutDetaching)

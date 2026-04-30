@@ -67,7 +67,6 @@ class JobApplicationController extends Controller
 
         return response()->json($applications);
     }
-
     /**
      * Para la Empresa: Ver candidatos de una oferta específica
      */
@@ -78,7 +77,7 @@ class JobApplicationController extends Controller
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        $applications = JobApplication::with(['user']) // Cargamos los datos del alumno
+        $applications = JobApplication::with(['user']) // Cargamos los datos del candidato
         ->where('job_offer_id', $offerId)
             ->get();
 

@@ -71,9 +71,9 @@ Route::middleware('auth:sanctum')->group(function () {
     |--- 2. ROL USER (Candidatos) ---
     | Se mantiene el middleware de habilidades pero sin duplicar rutas de fuera
     */
-    Route::middleware('ability:role-user')->group(function () {
+    Route::prefix('user')->group(function () {
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
-        Route::post('/applications', [JobApplicationController::class, 'store']);
+        // Route::post('/applications', [JobApplicationController::class, 'store']);
     });
 
     /*
