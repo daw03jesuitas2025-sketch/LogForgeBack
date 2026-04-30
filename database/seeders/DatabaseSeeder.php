@@ -16,11 +16,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+// 1. Administrador
         User::create([
             'name' => 'Admin Sistema',
             'email' => 'admin@logforge.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin'
+        ]);
+
+        // 2. Empresa
+        User::create([
+            'name' => 'Tech Company',
+            'email' => 'hr@techcompany.com',
+            'password' => Hash::make('empresa123'),
+            'role' => 'company'
+        ]);
+
+        // 3. Candidato
+        User::create([
+            'name' => 'Juan',
+            'email' => 'juan@gmail.com',
+            'password' => Hash::make('user123'),
+            'role' => 'candidate'
         ]);
     }
 }
