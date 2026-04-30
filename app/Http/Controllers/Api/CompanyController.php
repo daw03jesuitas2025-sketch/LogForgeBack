@@ -42,8 +42,14 @@ class CompanyController extends Controller
     {
         try {
             $user = auth()->user();
-            // Filtramos por user_id para que la empresa no vea ofertas de otros
-            $offers = JobOffer::where('user_id', $user->id)->latest()->get();
+
+            // Añadimos withCount('jobApplications') para que Laravel cuente automáticamente
+            // los candidatos postulados y cree el campo 'job_applications_count'
+            $offers = JobOffer::where('user_id', $user->id)
+                ->withCount('jobApplications') // <-- ESTA ES LA LÍNEA CLAVE
+                ->latest()
+                ->get();
+
             return response()->json($offers);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -92,6 +98,7 @@ class CompanyController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
     public function getCandidates() {
         // Filtramos para que solo devuelva usuarios con rol 'user'
         return User::where('role', 'user')->with('profile')->get();
