@@ -46,7 +46,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
 
-    // Eliminado el middleware duplicado aquí para evitar errores
     Route::get('/candidates', [AuthController::class, 'getCandidates']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
@@ -62,7 +61,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/job-offers', [JobOfferController::class, 'store']);
         Route::put('/job-offers/{id}', [JobOfferController::class, 'update']);
         Route::delete('/job-offers/{id}', [JobOfferController::class, 'destroy']);
-
         Route::get('/my-profile', [CompanyController::class, 'getMyProfile']);
         Route::put('/my-profile', [CompanyController::class, 'updateProfile']);
         Route::get('/candidates', [CompanyController::class, 'getCandidates']);
@@ -76,7 +74,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('ability:role-user')->group(function () {
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
         Route::post('/applications', [JobApplicationController::class, 'store']);
-        // Las rutas de perfil se gestionan por la parte común para evitar el 401/500
     });
 
     /*
