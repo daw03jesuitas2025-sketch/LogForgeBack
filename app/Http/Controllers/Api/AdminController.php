@@ -23,18 +23,73 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
+    // USUARIOS
     public function getUsers()
     {
         // Devolvemos todos los usuarios para la tabla
         return response()->json(User::all());
     }
 
-    //public function getJobOffers()
-    //{
-        // Devolvemos todas las ofertas
-        //return response()->json(JobOffer::all());
-    //}
+    public function storeUser(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name'     => 'required|string|max:255',
+                'email'    => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'role'     => 'required|string|in:admin,company,candidate'
+            ]);
+
+            $user = User::create([
+                'name'     => $validated['name'],
+                'email'    => $validated['email'],
+                'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+                'role'     => $validated['role'],
+            ]);
+
+            return response()->json([
+                'message' => 'Usuario creado con éxito',
+                'user' => $user
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error interno: ' . $e->getMessage()], 500);
+        }
+    }
+
+    // Añade esto a tu AdminController.php
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role'     => 'required|string',
+            'password' => 'nullable|string|min:6' // Password opcional al editar
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->role = $validated['role'];
+
+        if (!empty($validated['password'])) {
+            $user->password = \Illuminate\Support\Facades\Hash::make($validated['password']);
+        }
+
+        $user->save();
+        return response()->json(['message' => 'Usuario actualizado', 'user' => $user]);
+    }
+
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'Usuario eliminado']);
+    }
 
     public function getMessages()
     {

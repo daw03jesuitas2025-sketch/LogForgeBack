@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Juan',
             'email' => 'juan@gmail.com',
             'password' => Hash::make('user123'),
-            'role' => 'candidate'
+            'role' => 'user'
         ]);
     }
 }

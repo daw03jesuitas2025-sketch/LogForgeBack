@@ -82,6 +82,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/stats', [AdminController::class, 'getDashboardStats']);
         Route::get('/users', [AdminController::class, 'getUsers']);
+        Route::post('/users', [AdminController::class, 'storeUser']);
+        Route::put('/users/{id}', [AdminController::class, 'updateUser']);
+        Route::delete('/users/{id}', [AdminController::class, 'destroyUser']);
         Route::get('/offers', [AdminController::class, 'getJobOffers']);
         Route::get('/messages', [AdminController::class, 'getMessages']);
         Route::get('/companies', [AdminController::class, 'getCompanies']);
