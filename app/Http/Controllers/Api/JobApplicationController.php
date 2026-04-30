@@ -16,7 +16,6 @@ class JobApplicationController extends Controller
             'message'      => 'nullable|string|max:1000',
         ]);
 
-        // CAMBIO CRÍTICO: Usamos el ID del usuario REAL autenticado
         $userId = Auth::id();
 
         $alreadyApplied = JobApplication::where('user_id', $userId)
@@ -53,13 +52,33 @@ class JobApplicationController extends Controller
         }
     }
 
+    /**
+     * Para el Candidato: Ver sus propias postulaciones
+     */
     public function myApplications()
     {
         $userId = Auth::id();
 
-        $applications = JobApplication::with('jobOffer.user.companyProfile')
-            ->where('user_id', $userId)
+        $applications = JobApplication::with(['jobOffer.user.companyProfile'])
+            ->where('user_id', $userId) // Filtramos por el ID del alumno
             ->latest()
+            ->get();
+
+        return response()->json($applications);
+    }
+
+    /**
+     * Para la Empresa: Ver candidatos de una oferta específica
+     */
+    public function getApplicantsByOffer($offerId)
+    {
+        // Verificamos que la oferta pertenezca a la empresa que pregunta
+        $offer = JobOffer::where('id', $offerId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $applications = JobApplication::with(['user']) // Cargamos los datos del alumno
+        ->where('job_offer_id', $offerId)
             ->get();
 
         return response()->json($applications);

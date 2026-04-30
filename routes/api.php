@@ -66,9 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/my-profile', [CompanyController::class, 'getMyProfile']);
         Route::put('/my-profile', [CompanyController::class, 'updateProfile']);
         Route::get('/candidates', [CompanyController::class, 'getCandidates']);
-        Route::get('/job-offers/{id}/applications', [JobOfferController::class, 'getApplications']); // Candidatos de una oferta
-
-        // Eliminada la repetición de candidates y interview que ya estaban arriba
+        Route::get('/job-offers/{id}/applications', [JobApplicationController::class, 'getApplicantsByOffer']); // Candidatos de una oferta
     });
 
     /*
@@ -77,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
     */
     Route::middleware('ability:role-user')->group(function () {
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
+        Route::post('/applications', [JobApplicationController::class, 'store']);
         // Las rutas de perfil se gestionan por la parte común para evitar el 401/500
     });
 
