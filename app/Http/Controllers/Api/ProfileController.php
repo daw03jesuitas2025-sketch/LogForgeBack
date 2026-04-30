@@ -80,7 +80,7 @@ class ProfileController extends Controller
         $user = auth()->user()->load(['profile', 'educations', 'experiences', 'skills']);
 
         // Cargar la vista Blade que formatea el CV/resume
-        $pdf = Pdf::loadView('resume', ['user' => $user]);
+        $pdf = Pdf::loadView('pdf.resume', ['user' => $user]);
 
         return $pdf->download('resume_' . $user->id . '.pdf');
     }

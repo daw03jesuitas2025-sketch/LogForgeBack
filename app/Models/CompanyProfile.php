@@ -16,6 +16,7 @@ class CompanyProfile extends Model
         'company_name',
         'website',
         'description',
+        'logo',
     ];
 
     public function user(): BelongsTo

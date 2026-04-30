@@ -60,7 +60,7 @@ class JobApplicationController extends Controller
         $userId = Auth::id();
 
         $applications = JobApplication::with(['jobOffer.user.companyProfile'])
-            ->where('user_id', $userId) // Filtramos por el ID del alumno
+            ->where('user_id', $userId)
             ->latest()
             ->get();
 

@@ -15,11 +15,10 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->unique();
-
             $table->string('company_name');
             $table->string('website')->nullable();
             $table->text('description')->nullable();
-
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }
