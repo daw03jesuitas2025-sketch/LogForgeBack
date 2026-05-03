@@ -54,12 +54,18 @@ class JobOfferController extends Controller
 
         return response()->json($offer);
     }
-
-    // Borrar (DELETE /api/job-offers/{id})
-    public function destroy(JobOffer $jobOffer)
+    public function destroy($id) // Recibimos el $id tal cual está en api.php
     {
-        $jobOffer->delete();
-        return response()->json(['message' => 'Eliminado']);
+        $offer = JobOffer::where('id', $id)
+            ->where('user_id', auth()->id()) // Seguridad extra: que solo el dueño la borre
+            ->first();
+
+        if ($offer) {
+            $offer->delete();
+            return response()->json(['message' => 'Oferta eliminada correctamente']);
+        }
+
+        return response()->json(['message' => 'Oferta no encontrada'], 404);
     }
 
     public function getApplications($id)
