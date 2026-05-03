@@ -13,8 +13,13 @@ class JobOfferController extends Controller
     // Listar todas las ofertas (GET /api/job-offers)
     public function index()
     {
-        // Traemos también los datos de la empresa (relación company)
-        return response()->json(JobOffer::with('user.companyProfile')->where('is_active', true)->latest()->get());    }
+        $offers = JobOffer::with(['user.companyProfile'])
+            ->where('is_active', true)
+            ->latest()
+            ->get();
+
+        return response()->json($offers);
+    }
 
     // Crear oferta (POST /api/job-offers)
     public function store(Request $request)

@@ -147,7 +147,7 @@
             <div class="item">
                 <div class="item-title">{{ $edu->degree }}</div>
                 <div class="item-subtitle">{{ $edu->institution }}</div>
-                <div class="item-date">{{ $edu->start_year }} — {{ $edu->end_year ?? 'Actualidad' }}</div>
+                <div class="item-date">{{ $edu->start_date }} — {{ $edu->end_date ?? 'Actualidad' }}</div>
             </div>
         @endforeach
     </div>
