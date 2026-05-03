@@ -76,9 +76,13 @@ class ProfileController extends Controller
     // Generar y descargar un PDF con el perfil completo del usuario
     public function resume()
     {
+        // Usamos load() para traer la información más reciente de la base de datos
         $user = auth()->user()->load(['profile', 'educations', 'experiences', 'skills']);
 
-        // Cargar la vista Blade que formatea el CV/resume
+        // Importante: Si acabas de actualizar el perfil en la misma sesión,
+        // a veces es necesario refrescar el modelo
+        $user->refresh();
+
         $pdf = Pdf::loadView('pdf.resume', ['user' => $user]);
 
         return $pdf->download('resume_' . $user->id . '.pdf');
