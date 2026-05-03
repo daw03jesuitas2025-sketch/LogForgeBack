@@ -64,30 +64,23 @@ class CompanyController extends Controller
         try {
             $user = auth()->user();
 
-            // 1. Validamos los datos
             $validated = $request->validate([
                 'company_name' => 'required|string|max:255',
                 'website'      => 'nullable|url',
                 'description'  => 'nullable|string',
-                'logo'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validación de imagen
+                'logo'         => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            // 2. Buscamos el perfil existente
             $profile = CompanyProfile::where('user_id', $user->id)->first();
 
-            // 3. Lógica para procesar la imagen si viene en la petición
             if ($request->hasFile('logo')) {
-                $file = $request->file('logo');
-                $fileName = time() . '_' . $file->getClientOriginalName();
+                // 1. Guardar en storage/app/public/logos
+                $path = $request->file('logo')->store('logos', 'public');
 
-                // Guardamos físicamente el archivo en public/logos
-                $file->move(public_path('logos'), $fileName);
-
-                // Guardamos la ruta que se almacenará en la DB (String)
-                $validated['logo'] = '/logos/' . $fileName;
+                // 2. Guardamos la ruta relativa: /storage/logos/archivo.jpg
+                $validated['logo'] = '/storage/' . $path;
             }
 
-            // 4. Actualizamos o creamos el perfil
             $profile = CompanyProfile::updateOrCreate(
                 ['user_id' => $user->id],
                 $validated
