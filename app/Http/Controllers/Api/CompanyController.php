@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\JobOffer;
 use App\Models\CompanyProfile;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -74,10 +75,14 @@ class CompanyController extends Controller
             $profile = CompanyProfile::where('user_id', $user->id)->first();
 
             if ($request->hasFile('logo')) {
-                // 1. Guardar en storage/app/public/logos
-                $path = $request->file('logo')->store('logos', 'public');
+                $file = $request->file('logo');
 
-                // 2. Guardamos la ruta relativa: /storage/logos/archivo.jpg
+                // Esto crea la carpeta 'logos' dentro de storage/app/public si no existe
+                // y guarda el archivo con un nombre único.
+                $path = $file->store('logos', 'public');
+
+                // Railway necesita la URL completa o la ruta relativa correcta
+                // Guardamos: /storage/logos/nombre_archivo.jpg
                 $validated['logo'] = '/storage/' . $path;
             }
 
