@@ -17,8 +17,6 @@ class Profile extends Model
         'biography',
         'location',
         'cv_path',
-        'meta_title',
-        'meta_description',
     ];
 
     public function user(): BelongsTo

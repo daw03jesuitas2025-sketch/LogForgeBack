@@ -10,21 +10,14 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete()
                 ->unique();
-
             $table->string('title')->nullable();
             $table->text('biography')->nullable();
             $table->string('location')->nullable();
-
             $table->string('cv_path')->nullable();
-
-            $table->string('meta_title')->nullable();
-            $table->string('meta_description')->nullable();
-
             $table->timestamps();
         });
     }

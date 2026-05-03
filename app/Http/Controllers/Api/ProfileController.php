@@ -14,7 +14,7 @@ class ProfileController extends Controller
     public function show()
     {
         // Cargamos al usuario con sus 3 relaciones clave
-        $user = auth()->user()->load(['educations', 'experiences', 'skills']);
+        $user = auth()->user()->load(['profile','educations', 'experiences', 'skills']);
 
         return response()->json($user);
     }
