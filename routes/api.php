@@ -39,11 +39,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/resume', [ProfileController::class, 'resume']);
     Route::apiResource('experiences', ExperienceController::class);
     Route::apiResource('educations', EducationController::class);
+    Route::apiResource('projects', ProjectController::class);
     Route::delete('/skills/{id}', [SkillController::class, 'destroy']);
     Route::post('/skills', [ProfileController::class, 'addSkill']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::post('/applications', [JobApplicationController::class, 'store']);
-    Route::apiResource('projects', ProjectController::class);
 
     Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);

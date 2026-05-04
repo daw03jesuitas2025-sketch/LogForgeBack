@@ -40,35 +40,13 @@ class ProjectController extends Controller
         return response()->json($project);
     }
 
-// App\Http\Controllers\Api\ProjectController.php
-
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        // Buscamos el proyecto manualmente por ID
-        $project = Project::find($id);
-
-        // Si no lo encuentra, devolvemos un mensaje claro para saber que entró aquí
-        if (!$project) {
-            return response()->json([
-                'message' => "No se encontró el proyecto con ID: {$id}"
-            ], 404);
-        }
-
-        // Verificamos que el usuario logueado sea el dueño (ID 4 en tu caso)
         if ($project->user_id !== Auth::id()) {
-            return response()->json([
-                'message' => 'No tienes permiso para borrar este proyecto',
-                'debug' => [
-                    'project_owner' => $project->user_id,
-                    'current_user' => Auth::id()
-                ]
-            ], 403);
+            return response()->json(['message' => 'No autorizado'], 403);
         }
 
         $project->delete();
-
-        return response()->json([
-            'message' => 'Proyecto eliminado correctamente'
-        ]);
+        return response()->json(['message' => 'Proyecto eliminado']);
     }
 }
