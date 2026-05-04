@@ -105,15 +105,15 @@
         /* El badge o pill */
         .skill-badge {
             display: inline-block;
-            background-color: #dbeafe; /* Azul clarito */
-            color: #1e40af;           /* Azul oscuro */
-            padding: 4px 10px;
+            background-color: #f1f5f9;
+            color: #475569;
+            padding: 4px 12px;
             border-radius: 12px;
             font-size: 11px;
             margin-right: 5px;
-            margin-bottom: 8px;       /* Espacio hacia abajo para que no choquen al saltar de línea */
-            border: 0.5px solid #bfdbfe;
-            white-space: nowrap;      /* Evita que una habilidad de dos palabras se parta a la mitad */
+            margin-bottom: 8px;
+            border: 0.5px solid #e2e8f0;
+            white-space: nowrap;
         }
 
     </style>

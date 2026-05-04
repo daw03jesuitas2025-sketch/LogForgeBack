@@ -172,4 +172,44 @@ class AdminController extends Controller
             'profile' => $profile
         ]);
     }
+    /**
+     * Obtener listado de candidatos (Perfiles)
+     */
+    public function getCandidates()
+    {
+        try {
+            // Cargamos la relación 'user' para tener el nombre y email del candidato
+            $candidates = \App\Models\Profile::with('user')->get();
+            return response()->json($candidates);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al obtener candidatos: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Actualizar perfil de un candidato
+     */
+    public function updateCandidateProfile(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'location' => 'nullable|string|max:255',
+                'biography' => 'nullable|string',
+            ]);
+
+            // Buscamos el perfil por su ID (o user_id dependiendo de tu lógica)
+            $profile = \App\Models\Profile::findOrFail($id);
+            $profile->update($validated);
+
+            return response()->json([
+                'message' => 'Perfil de candidato actualizado con éxito',
+                'profile' => $profile
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al actualizar: ' . $e->getMessage()], 500);
+        }
+    }
 }
