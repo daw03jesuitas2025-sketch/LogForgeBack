@@ -79,7 +79,10 @@ class AuthController extends Controller
     // LOGOUT
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        // Verificamos que el usuario exista antes de borrar el token
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
 
         return response()->json([
             'message' => 'Logout correcto'
@@ -93,18 +96,22 @@ class AuthController extends Controller
     }
     public function refresh(Request $request)
     {
-        if (!$request->user()) {
-            return response()->json(['message' => 'No autorizado'], 401);
+        $user = $request->user();
+
+        // Si el middleware fallara o no estuviera, esto evita el error 500
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado o sesión expirada'], 401);
         }
-        // 1. Eliminamos el token que el usuario está usando actualmente para esta petición
-        $request->user()->currentAccessToken()->delete();
+
+        // 1. Eliminamos el token actual
+        $user->currentAccessToken()->delete();
 
         // 2. Creamos un nuevo token
-        $token = $request->user()->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Token renovado correctamente',
-            'user' => $request->user(),
+            'user' => $user,
             'token' => $token
         ]);
     }

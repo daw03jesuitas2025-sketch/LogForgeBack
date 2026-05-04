@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\JobOffer;
 use App\Models\CompanyProfile;
+use App\Models\Profile;
 
 class AdminController extends Controller
 {
