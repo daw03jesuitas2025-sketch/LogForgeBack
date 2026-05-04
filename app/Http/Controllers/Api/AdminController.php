@@ -59,8 +59,6 @@ class AdminController extends Controller
         }
     }
 
-    // Añade esto a tu AdminController.php
-
     public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -110,7 +108,11 @@ class AdminController extends Controller
             ];
         });
     }
-
+    public function deleteMessage($id) {
+        $message = Message::findOrFail($id);
+        $message->delete();
+        return response()->json(['message' => 'Eliminado']);
+    }
     public function getJobOffers()
     {
         // Cargamos la relación 'user' para mostrar el nombre de la empresa/reclutador

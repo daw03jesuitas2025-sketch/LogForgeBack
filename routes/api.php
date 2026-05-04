@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/messages', [AdminController::class, 'getMessages']);
         Route::get('/companies', [AdminController::class, 'getCompanies']);
         Route::get('/my-profile', [AdminController::class, 'getMyProfile']); //MIRARRR
+        Route::delete('/admin/messages/{id}', [AdminController::class, 'deleteMessage']);
     });
 
 });
