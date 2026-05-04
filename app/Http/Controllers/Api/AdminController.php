@@ -154,4 +154,21 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-}
+    public function updateCompanyProfile(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'company_name' => 'required|string|max:255',
+            'website'      => 'nullable|url',
+            'description'  => 'nullable|string|min:10',
+        ]);
+
+        $profile = CompanyProfile::updateOrCreate(
+            ['user_id' => $id],
+            $validated
+        );
+
+        return response()->json([
+            'message' => 'Perfil actualizado con éxito',
+            'profile' => $profile
+        ]);
+    }

@@ -92,6 +92,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/messages/{id}', [AdminController::class, 'deleteMessage']);
         Route::patch('/offers/{id}/toggle', [AdminController::class, 'toggleOfferStatus']);
         Route::delete('/offers/{id}', [AdminController::class, 'destroyOffer']);
+        Route::put('/companies/{id}/profile', [AdminController::class, 'updateCompanyProfile']);
+
     });
 
 });
