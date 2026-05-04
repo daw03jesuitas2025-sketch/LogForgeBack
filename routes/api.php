@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
         // Route::post('/applications', [JobApplicationController::class, 'store']);
     });
+    Route::delete('/messages/{id}', [AdminController::class, 'deleteMessage']);
 
     /*
     |--- 3. ROL ADMIN (SuperAdministrador del Sistema) ---
@@ -89,7 +90,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/messages', [AdminController::class, 'getMessages']);
         Route::get('/companies', [AdminController::class, 'getCompanies']);
         Route::get('/my-profile', [AdminController::class, 'getMyProfile']); //MIRARRR
-        Route::delete('/admin/messages/{id}', [AdminController::class, 'deleteMessage']);
     });
 
 });
