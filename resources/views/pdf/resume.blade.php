@@ -95,18 +95,25 @@
         }
 
         /* SKILLS */
+        /* Contenedor principal de habilidades */
         .skills-container {
+            width: 100%;
             margin-top: 10px;
+            padding: 0;
         }
 
+        /* El badge o pill */
         .skill-badge {
             display: inline-block;
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin: 4px;
+            background-color: #dbeafe; /* Azul clarito */
+            color: #1e40af;           /* Azul oscuro */
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-right: 5px;
+            margin-bottom: 8px;       /* Espacio hacia abajo para que no choquen al saltar de línea */
+            border: 0.5px solid #bfdbfe;
+            white-space: nowrap;      /* Evita que una habilidad de dos palabras se parta a la mitad */
         }
 
     </style>
