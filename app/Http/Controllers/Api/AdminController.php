@@ -186,9 +186,9 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * Actualizar perfil de un candidato
-     */
+
+     // Actualizar perfil de un candidato
+
     public function updateCandidateProfile(Request $request, $id)
     {
         try {
@@ -198,14 +198,16 @@ class AdminController extends Controller
                 'biography' => 'nullable|string',
             ]);
 
-            // Buscamos el perfil por su ID (o user_id dependiendo de tu lógica)
-            $profile = \App\Models\Profile::findOrFail($id);
+            $profile = \App\Models\Profile::where('user_id', $id)->firstOrFail();
+
             $profile->update($validated);
 
             return response()->json([
                 'message' => 'Perfil de candidato actualizado con éxito',
                 'profile' => $profile
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'No se encontró un perfil para el usuario con ID: ' . $id], 404);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
