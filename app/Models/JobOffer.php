@@ -34,4 +34,10 @@ class JobOffer extends Model
     {
         return $this->hasMany(JobApplication::class);
     }
+
+    public function companyProfile()
+    {
+        // Asegúrate de que el modelo CompanyProfile exista
+        return $this->hasOne(CompanyProfile::class);
+    }
 }
