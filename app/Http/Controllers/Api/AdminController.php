@@ -132,6 +132,14 @@ class AdminController extends Controller
         return response()->json(['message' => 'Estado actualizado', 'is_active' => $offer->is_active]);
     }
 
+    public function destroyOffer($id)
+    {
+        $offer = JobOffer::findOrFail($id);
+        $offer->delete(); // Si usas SoftDeletes, se marcará como eliminada
+
+        return response()->json(['message' => 'Oferta eliminada correctamente']);
+    }
+
     public function getCompanies()
     {
         try {
