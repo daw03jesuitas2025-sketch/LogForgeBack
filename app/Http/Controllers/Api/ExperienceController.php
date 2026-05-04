@@ -41,7 +41,7 @@ class ExperienceController extends Controller
      */
     public function update(Request $request, Experience $experience)
     {
-        // Seguridad: Verificar que la experiencia pertenece al usuario
+        // Verificar que la experiencia pertenece al usuario
         if ($experience->user_id !== Auth::id()) {
             return response()->json(['message' => 'No autorizado'], 403);
         }

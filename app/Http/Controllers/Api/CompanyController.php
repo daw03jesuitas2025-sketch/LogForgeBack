@@ -43,7 +43,6 @@ class CompanyController extends Controller
     {
         try {
             $user = auth()->user();
-
             //  withCount('jobApplications') para que Laravel cuente automáticamente
             // los candidatos postulados y cree el campo 'job_applications_count'
             $offers = JobOffer::where('user_id', $user->id)
@@ -77,12 +76,11 @@ class CompanyController extends Controller
             if ($request->hasFile('logo')) {
                 $file = $request->file('logo');
 
-                // Esto crea la carpeta 'logos' dentro de storage/app/public si no existe
+                // crea la carpeta 'logos' dentro de storage/app/public si no existe
                 // y guarda el archivo con un nombre único.
                 $path = $file->store('logos', 'public');
 
                 // Railway necesita la URL completa o la ruta relativa correcta
-                // Guardamos: /storage/logos/nombre_archivo.jpg
                 $validated['logo'] = '/storage/' . $path;
             }
 
@@ -98,7 +96,7 @@ class CompanyController extends Controller
     }
 
     public function getCandidates() {
-        // Filtramos para que solo devuelva usuarios con rol 'user'
+        // solo devuelve usuarios con rol 'user'
         return User::where('role', 'user')->with('profile')->get();
     }
 }

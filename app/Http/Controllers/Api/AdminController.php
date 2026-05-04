@@ -92,7 +92,6 @@ class AdminController extends Controller
 
     public function getMessages()
     {
-        // Cargamos la relación 'toUser' que definiste en el modelo Message
         $messages = \App\Models\Message::with('toUser')->latest()->get();
 
         return $messages->map(function ($msg) {
@@ -125,8 +124,7 @@ class AdminController extends Controller
 
         return response()->json($offers);
     }
-
-// Extra: Método para activar/desactivar ofertas (útil para moderación)
+// Método para activar/desactivar ofertas
     public function toggleOfferStatus($id)
     {
         $offer = JobOffer::findOrFail($id);
@@ -149,10 +147,6 @@ class AdminController extends Controller
         try {
             // Opción A: Si quieres listar los perfiles de empresa directamente
             $companies = CompanyProfile::with('user')->get();
-
-            // Opción B (Mejor para LinkedIn): Listar Usuarios que tengan el ROL company
-            // $companies = User::where('role', 'company')->with('companyProfile')->get();
-
             return response()->json($companies);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

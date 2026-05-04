@@ -77,8 +77,7 @@ class JobApplicationController extends Controller
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        //$applications = JobApplication::with(['user']) // Cargamos los datos del candidato
-        $applications = JobApplication::with(['user.profile']) // Añade .profile
+        $applications = JobApplication::with(['user.profile'])
         ->where('job_offer_id', $offerId)
             ->get();
 

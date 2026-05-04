@@ -13,7 +13,6 @@ class JobOfferController extends Controller
     // Listar todas las ofertas (GET /api/job-offers)
     public function index()
     {
-        // Usamos el nombre de la relación tal cual está definida en el modelo User
         $offers = JobOffer::with(['user.companyProfile'])
             ->where('is_active', true)
             ->latest()

@@ -3,14 +3,14 @@
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CompanyController;
-use App\Http\Controllers\Api\ExperienceController;
-use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\Api\EducationController;
+use App\Http\Controllers\Api\ExperienceController;
 use App\Http\Controllers\Api\JobApplicationController;
+use App\Http\Controllers\Api\JobOfferController;
+use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SkillController;
-use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,10 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    // Comentamos o quitamos el apiResource general si vas a usar las rutas de /company
-    // Route::apiResource('job-offers', JobOfferController::class);
-
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::get('/profile/resume', [ProfileController::class, 'resume']);
     Route::apiResource('experiences', ExperienceController::class);
@@ -46,10 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/skills', [ProfileController::class, 'addSkill']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::post('/applications', [JobApplicationController::class, 'store']);
-
     Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
-
     Route::get('/candidates', [AuthController::class, 'getCandidates']);
     Route::get('/messages/my-messages', [MessageController::class, 'getMyMessages']);
 
@@ -57,10 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     |--- 1. ROL COMPANY (Empresas) ---
     */
     Route::prefix('company')->group(function () {
-
         Route::get('/my-offers', [CompanyController::class, 'getMyOffers']);
-
-        // Definimos las rutas de ofertas dentro de 'company' para que coincidan con tu Angular
         Route::post('/job-offers', [JobOfferController::class, 'store']);
         Route::put('/job-offers/{id}', [JobOfferController::class, 'update']);
         Route::delete('/job-offers/{id}', [JobOfferController::class, 'destroy']);
@@ -72,11 +63,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /*
     |--- 2. ROL USER (Candidatos) ---
-    | Se mantiene el middleware de habilidades pero sin duplicar rutas de fuera
     */
     Route::prefix('user')->group(function () {
         Route::get('/my-applications', [JobApplicationController::class, 'myApplications']);
-        // Route::post('/applications', [JobApplicationController::class, 'store']);
     });
 
     /*
@@ -96,7 +85,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/offers/{id}/toggle', [AdminController::class, 'toggleOfferStatus']);
         Route::delete('/offers/{id}', [AdminController::class, 'destroyOffer']);
         Route::put('/companies/{id}/profile', [AdminController::class, 'updateCompanyProfile']);
-
+        Route::get('/candidates', [AdminController::class, 'getCandidates']);
+        Route::put('/candidates/{id}', [AdminController::class, 'updateCandidateProfile']);
     });
 
 });
