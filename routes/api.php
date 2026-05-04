@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\JobApplicationController;
+use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SkillController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/skills', [ProfileController::class, 'addSkill']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::post('/applications', [JobApplicationController::class, 'store']);
+    Route::apiResource('projects', ProjectController::class);
 
     Route::get('/suggestions', [AuthController::class, 'getSuggestions']);
     Route::post('/messages/interview', [MessageController::class, 'sendInterviewRequest']);
