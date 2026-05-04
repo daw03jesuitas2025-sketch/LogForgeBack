@@ -23,6 +23,7 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
     // USUARIOS
     public function getUsers()
     {
@@ -34,17 +35,17 @@ class AdminController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name'     => 'required|string|max:255',
-                'email'    => 'required|string|email|max:255|unique:users',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
-                'role'     => 'required|string|in:admin,company,candidate'
+                'role' => 'required|string|in:admin,company,candidate'
             ]);
 
             $user = User::create([
-                'name'     => $validated['name'],
-                'email'    => $validated['email'],
+                'name' => $validated['name'],
+                'email' => $validated['email'],
                 'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
-                'role'     => $validated['role'],
+                'role' => $validated['role'],
             ]);
 
             return response()->json([
@@ -64,9 +65,9 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users,email,' . $id,
-            'role'     => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|string',
             'password' => 'nullable|string|min:6' // Password opcional al editar
         ]);
 
@@ -94,7 +95,7 @@ class AdminController extends Controller
         // Cargamos la relación 'toUser' que definiste en el modelo Message
         $messages = \App\Models\Message::with('toUser')->latest()->get();
 
-        return $messages->map(function($msg) {
+        return $messages->map(function ($msg) {
             return [
                 'id' => $msg->id,
                 'from_name' => $msg->from_name,
@@ -108,11 +109,14 @@ class AdminController extends Controller
             ];
         });
     }
-    public function deleteMessage($id) {
+
+    public function deleteMessage($id)
+    {
         $message = Message::findOrFail($id);
         $message->delete();
         return response()->json(['message' => 'Eliminado']);
     }
+
     public function getJobOffers()
     {
         // Cargamos la relación 'user' para mostrar el nombre de la empresa/reclutador
@@ -154,12 +158,13 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
     public function updateCompanyProfile(Request $request, $id)
     {
         $validated = $request->validate([
             'company_name' => 'required|string|max:255',
-            'website'      => 'nullable|url',
-            'description'  => 'nullable|string|min:10',
+            'website' => 'nullable|url',
+            'description' => 'nullable|string|min:10',
         ]);
 
         $profile = CompanyProfile::updateOrCreate(
@@ -172,3 +177,4 @@ class AdminController extends Controller
             'profile' => $profile
         ]);
     }
+}
