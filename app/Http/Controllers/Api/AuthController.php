@@ -91,6 +91,23 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+    public function refresh(Request $request)
+    {
+        if (!$request->user()) {
+            return response()->json(['message' => 'No autorizado'], 401);
+        }
+        // 1. Eliminamos el token que el usuario está usando actualmente para esta petición
+        $request->user()->currentAccessToken()->delete();
+
+        // 2. Creamos un nuevo token
+        $token = $request->user()->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Token renovado correctamente',
+            'user' => $request->user(),
+            'token' => $token
+        ]);
+    }
     public function getSuggestions()
     {
         $currentUserId = auth()->id();

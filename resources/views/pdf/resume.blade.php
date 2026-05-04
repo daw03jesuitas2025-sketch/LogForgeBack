@@ -152,6 +152,27 @@
         @endforeach
     </div>
 
+    @if(count($user->projects) > 0)
+        <div class="section">
+            <div class="section-title">Portafolio de Proyectos</div>
+            @foreach($user->projects as $project)
+                <div class="item">
+                    <div class="item-title">
+                        {{ $project->title }}
+                    </div>
+                    <div class="about" style="background: transparent; padding: 5px 0; margin-bottom: 2px;">
+                        {{ $project->description }}
+                    </div>
+                    @if($project->repo_url)
+                        <div style="font-size: 10px; color: #4f46e5; font-style: italic;">
+                            Repo: {{ $project->repo_url }}
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <div class="section">
         <div class="section-title">Habilidades</div>
         <div class="skills-container">

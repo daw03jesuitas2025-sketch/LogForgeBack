@@ -44,7 +44,7 @@ class CompanyController extends Controller
         try {
             $user = auth()->user();
 
-            // Añadimos withCount('jobApplications') para que Laravel cuente automáticamente
+            //  withCount('jobApplications') para que Laravel cuente automáticamente
             // los candidatos postulados y cree el campo 'job_applications_count'
             $offers = JobOffer::where('user_id', $user->id)
                 ->withCount('applications')
