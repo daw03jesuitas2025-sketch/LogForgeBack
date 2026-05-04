@@ -14,10 +14,11 @@ class ProfileController extends Controller
     public function show()
     {
         // Cargamos al usuario con sus 3 relaciones clave
-        $user = auth()->user()->load(['profile','educations', 'experiences', 'skills']);
+        $user = auth()->user()->load(['profile','educations', 'experiences', 'skills', 'projects']);
 
         return response()->json($user);
     }
+
     // Actualizar datos básicos (Titular, Bio, Ubicación)
     public function update(Request $request)
     {

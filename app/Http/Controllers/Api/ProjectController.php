@@ -20,7 +20,6 @@ class ProjectController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'repo_url'    => 'nullable|url',
-            'demo_url'    => 'nullable|url',
         ]);
 
         $project = Auth::user()->projects()->create($validated);
@@ -35,7 +34,6 @@ class ProjectController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'repo_url'    => 'nullable|url',
-            'demo_url'    => 'nullable|url',
         ]);
 
         $project->update($validated);

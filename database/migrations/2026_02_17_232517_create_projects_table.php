@@ -19,9 +19,6 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->string('repo_url')->nullable();
-            $table->string('demo_url')->nullable();
-
-            $table->unsignedInteger('views')->default(0);
 
             $table->timestamps();
             $table->softDeletes();

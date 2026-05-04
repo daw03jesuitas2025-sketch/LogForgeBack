@@ -18,8 +18,6 @@ class Project extends Model
         'title',
         'description',
         'repo_url',
-        'demo_url',
-        'views',
     ];
 
     public function user(): BelongsTo
